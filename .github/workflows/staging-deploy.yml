@@ -20,6 +20,13 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.CI_BOT_APP_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+
       - name: Check out Git repository
         uses: actions/checkout@v4
 
@@ -34,7 +41,7 @@ jobs:
           sudo dpkg -i ghcli.deb
 
       - name: Login to GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        run: echo "${{ steps.generate-token.outputs.token }}" | gh auth login --with-token
 
       # Runs a set of commands using the runners shell
       - name: Check for existing draft release that starts with 'prod-'
