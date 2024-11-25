@@ -6,7 +6,7 @@ name: CI Staging Deploy
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
           sudo dpkg -i ghcli.deb
 
       - name: Login to GitHub CLI
-        run: echo "${{ secrets.PAT }}" | gh auth login --with-token
+        run: echo "${{ secrets.CI_BOT_KEY }}" | gh auth login --with-token
 
       # Runs a set of commands using the runners shell
       - name: Check for existing draft release that starts with 'prod-'
